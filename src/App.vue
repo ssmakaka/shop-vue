@@ -1,6 +1,6 @@
 <template>
   <section class="catalog">
-    <ProductList :products="products">
+    <ProductList :products="productsPagination">
     </ProductList>
 <BasePagination v-model="page" :count="countProducts" :per-page="productsPerPage"></BasePagination>
   </section>
@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    products() {
+    productsPagination() {
       const offset = (this.page - 1) * this.productsPerPage;
       return products.slice(offset, offset + this.productsPerPage);
     },

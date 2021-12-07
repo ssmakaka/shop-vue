@@ -3,9 +3,11 @@
     <li class="pagination__item">
       <a
         class="
-          pagination__link pagination__link--arrow pagination__link--disabled
+          pagination__link pagination__link--arrow
         "
+        :class="{'pagination__link--disabled': page === 1}"
         aria-label="Предыдущая страница"
+        @click.prevent="paginate(page - 1)"
       >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
@@ -23,6 +25,8 @@
         class="pagination__link pagination__link--arrow"
         href="#"
         aria-label="Следующая страница"
+        :class="{'pagination__link--disabled': page === pages}"
+        @click.prevent="paginate(page + 1)"
       >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
