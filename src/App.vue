@@ -42,20 +42,20 @@ export default {
   },
   computed: {
     filteredProducts() {
-      let fltProducts = products;
+      let fltProd = products;
       if (this.filterPriceFrom > 0) {
-        fltProducts = fltProducts.filter((product) => product.price > this.filterPriceFrom);
+        fltProd = fltProd.filter((product) => product.price > this.filterPriceFrom);
       }
       if (this.filterPriceTo > 0) {
-        fltProducts = fltProducts.filter((product) => product.price < this.filterPriceTo);
+        fltProd = fltProd.filter((product) => product.price < this.filterPriceTo);
       }
       if (this.filterCategoryId) {
-        fltProducts = fltProducts.filter((product) => product.categoryId === this.filterCategoryId);
+        fltProd = fltProd.filter((product) => product.categoryId === this.filterCategoryId);
       }
       if (this.filterColorCod) {
-        fltProducts = fltProducts.filter((product) => product.colorCod === this.filterColorCod);
+        fltProd = fltProd.filter((product) => product.colorCod.includes(this.filterColorCod));
       }
-      return fltProducts;
+      return fltProd;
     },
     productsPagination() {
       const offset = (this.page - 1) * this.productsPerPage;
