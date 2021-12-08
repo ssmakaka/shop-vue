@@ -8,7 +8,7 @@
     <div class="content__catalog">
       <ProductFilter :price-from.sync="filterPriceFrom"
       :price-to.sync="filterPriceTo" :category-id.sync="filterCategoryId"
-      :color-cod="filterColorCod"></ProductFilter>
+      :color-cod.sync="filterColorCod" @filters-update="goToFirstPage"></ProductFilter>
       <section class="catalog">
         <ProductList :products="productsPagination"> </ProductList>
         <BasePagination
@@ -67,6 +67,11 @@ export default {
     // colorProducts() {
     //   return this.filteredProducts.length;
     // },
+  },
+  methods: {
+    goToFirstPage() {
+      this.page = 1;
+    },
   },
 };
 </script>
