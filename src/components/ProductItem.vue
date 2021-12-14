@@ -1,7 +1,7 @@
 <template>
 <li class="catalog__item" >
             <a class="catalog__pic" href="#"
-            @click.prevent="$emit('gotoPage', 'product', {id: prod.id})">
+            @click.prevent="gotoPage('product', {id: prod.id})">
               <img :src="prod.img" :alt="prod.title">
             </a>
 
@@ -12,7 +12,7 @@
             </h3>
 
             <span class="catalog__price">
-              {{ prod.price }} BYN
+              {{ prod.price | numberFormat}} BYN
             </span>
 
             <ul class="colors colors--black">
@@ -25,9 +25,17 @@
 
 <script>
 import ProductColor from './ProductColor.vue';
+import gotoPage from '@/helpers/gotoPage';
+import numberFormat from '@/helpers/numberFormat';
 
 export default {
   components: { ProductColor },
   props: ['prod'],
+  methods: {
+    gotoPage,
+  },
+  filters: {
+    numberFormat,
+  },
 };
 </script>
