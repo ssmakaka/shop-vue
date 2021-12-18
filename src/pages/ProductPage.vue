@@ -80,7 +80,7 @@
             </fieldset>
 
             <div class="item__row">
-<Quantity v-modal='productAmount' />
+<Quantity v-model='productAmount' :count="productAmount"/>
               <button class="button button--primery" type="submit">
                 В корзину
               </button>
@@ -173,7 +173,7 @@ import Quantity from '@/components/Quantity.vue';
 export default {
   data() {
     return {
-      productAmount: this.count,
+      productAmount: 1,
     };
   },
   components: { ProductColor, Quantity },
