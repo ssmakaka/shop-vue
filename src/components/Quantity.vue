@@ -7,8 +7,8 @@
                   </svg>
                 </button>
 
-                <input type="text" :value="count"
-                v-on:input="$emit('input', $event.target.value)">
+                <input type="text" v-model="countQuantity"
+                v-on:input="currentCount">
 
                 <button type="button" aria-label="Добавить один товар"
                 @click.prevent="plus">
@@ -22,13 +22,19 @@
 
 export default {
   props: ['count'],
+  data() {
+    return { countQuantity: this.count };
+  },
   methods: {
     plus() {
-      this.count += 1;
+      this.countQuantity += 1;
     },
     minus() {
-      this.count -= 1;
-      if (this.count < 0) { this.count += 1; }
+      this.countQuantity -= 1;
+      if (this.countQuantity < 0) { this.countQuantity += 1; }
+    },
+    currentCount() {
+      this.$emit('update:count', this.countQuantity);
     },
   },
 };

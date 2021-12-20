@@ -80,7 +80,7 @@
             </fieldset>
 
             <div class="item__row">
-<Quantity v-model='productAmount' :count="productAmount"/>
+<Quantity :count.sync="productAmount" v-model="productAmount"/>
               <button class="button button--primery" type="submit">
                 В корзину
               </button>
