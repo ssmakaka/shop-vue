@@ -173,7 +173,7 @@ import Quantity from '@/components/Quantity.vue';
 export default {
   data() {
     return {
-      productAmount: 1,
+      productAmount: 0,
     };
   },
   components: { ProductColor, Quantity },

@@ -7,7 +7,8 @@
                   </svg>
                 </button>
 
-                <input type="text" v-model.number='count'>
+                <input type="text" :value="count"
+                v-on:input="$emit('input', $event.target.value)">
 
                 <button type="button" aria-label="Добавить один товар"
                 @click.prevent="plus">
