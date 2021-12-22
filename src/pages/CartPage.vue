@@ -18,7 +18,7 @@
         Корзина
       </h1>
       <span class="content__info">
-        {{ products.length }} товара
+        {{ totalProducts }} товара
       </span>
     </div>
 
@@ -54,7 +54,7 @@ import CartItem from '@/components/CartItem.vue';
 export default {
   components: { CartItem },
   computed: {
-    ...mapGetters({ products: 'cartDetProd', totalPrice: 'cartTotalPrice' }),
+    ...mapGetters({ products: 'cartDetProd', totalPrice: 'cartTotalPrice', totalProducts: 'cartTotalProducts' }),
     // products() {
     //   return this.$store.getters.cartDetProd;
     // },

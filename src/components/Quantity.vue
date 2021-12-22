@@ -7,8 +7,7 @@
                   </svg>
                 </button>
 
-                <input type="text" v-model="countQuantity"
-                v-on:input="currentCount">
+                <input type="number" v-model.number="countQuantity" min="0" readonly="true">
 
                 <button type="button" aria-label="Добавить один товар"
                 @click.prevent="plus">
@@ -28,12 +27,11 @@ export default {
   methods: {
     plus() {
       this.countQuantity += 1;
+      this.$emit('update:count', this.countQuantity);
     },
     minus() {
       this.countQuantity -= 1;
       if (this.countQuantity < 0) { this.countQuantity += 1; }
-    },
-    currentCount() {
       this.$emit('update:count', this.countQuantity);
     },
   },

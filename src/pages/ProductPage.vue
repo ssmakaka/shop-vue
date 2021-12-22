@@ -80,7 +80,7 @@
             </fieldset>
 
             <div class="item__row">
-<Quantity :count.sync="productAmount" v-model="productAmount"/>
+<Quantity :count.sync="productAmount"/>
               <button class="button button--primery" type="submit">
                 В корзину
               </button>
@@ -173,7 +173,7 @@ import Quantity from '@/components/Quantity.vue';
 export default {
   data() {
     return {
-      productAmount: 0,
+      productAmount: 1,
     };
   },
   components: { ProductColor, Quantity },
