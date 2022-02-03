@@ -1,4 +1,4 @@
-# shop-vue-3
+# shop-vue-2
 
 ## Project setup
 ```
