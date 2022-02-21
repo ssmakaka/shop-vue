@@ -15,8 +15,8 @@
             </span>
 
             <ul class="colors colors--black">
-              <ProductColor v-for='color in prod.colorCod'
-              :key="color" :colorArray="prod.colorCod" :color="color"
+              <ProductColor v-for='color in prod.colors'
+              :key="color.id" :colorArray="prod.colors" :color="color"
               :productID="prod.id" />
             </ul>
           </li>
