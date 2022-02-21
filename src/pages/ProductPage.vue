@@ -1,5 +1,13 @@
 <template>
-    <main class="content container">
+<div class="preloader" v-if='productsLoading'>
+        <div class="dash uno"></div>
+        <div class="dash dos"></div>
+        <div class="dash tres"></div>
+        <div class="dash cuatro"></div>
+      </div>
+      <div v-else-if='!loadProducts'>Произошла ошибка загрузки товаров
+        <button @click.prevent="loadProducts">Попробовать еще раз</button></div>
+    <main class="content container" v-else>
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -23,7 +31,7 @@
     <section class="item">
       <div class="item__pics pics">
         <div class="pics__wrapper">
-          <img width="570" height="570" :src="product.img" :alt="product.title">
+          <img width="570" height="570" :src="product.image.file.url" :alt="product.title">
         </div>
       </div>
 
@@ -41,8 +49,8 @@
             <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
               <ul class="colors">
-                <ProductColor v-for='color in product.colorCod'
-              :key="color" :colorArray="product.colorCod" :color="color"
+                <ProductColor v-for='color in colors'
+              :key="color.code" :colorArray="colors" :color="color"
               :productID="product.id" />
               </ul>
             </fieldset>
@@ -81,10 +89,13 @@
 
             <div class="item__row">
 <Quantity :count.sync="productAmount"/>
-              <button class="button button--primery" type="submit">
+              <button class="button button--primery" type="submit" :disabled="productAddSending">
                 В корзину
               </button>
             </div>
+
+            <div v-show="productAdded"> Товар добавлен в корзину </div>
+            <div v-show="productAddSending"> Товар добавляется </div>
           </form>
         </div>
       </div>
@@ -163,35 +174,71 @@
 </template>
 
 <script>
-import products from '@/data/products';
-import categories from '@/data/categories';
+import axios from 'axios';
+import { mapActions } from 'vuex';
 import gotoPage from '@/helpers/gotoPage';
 import ProductColor from '@/components/ProductColor.vue';
 import numberFormat from '@/helpers/numberFormat';
 import Quantity from '@/components/Quantity.vue';
+import { API_BASE_URL } from '@/config';
 
 export default {
   data() {
     return {
       productAmount: 1,
+      productsData: null,
+
+      productsLoading: false,
+      productsLoadingFailed: false,
+
+      productAdded: false,
+      productAddSending: false,
     };
   },
   components: { ProductColor, Quantity },
   computed: {
     product() {
-      return products.find((product) => product.id === +this.$route.params.id);
+      return this.productsData;
     },
     category() {
-      return categories.find((category) => category.id === this.product.categoryId);
+      return this.productsData.category;
+    },
+    colors() {
+      return this.productsData.colors;
     },
   },
   methods: {
+    ...mapActions(['addProductToCart']),
+
     gotoPage,
     addToCart() {
-      this.$store.commit(
-        'addProductToCart',
-        { productId: this.product.id, amount: this.productAmount },
-      );
+      this.productAdded = false;
+      this.productAddSending = true;
+      this.addProductToCart({ productId: this.product.id, amount: this.productAmount })
+        .then(() => {
+          this.productAdded = true;
+          this.productAddSending = false;
+        });
+    },
+    loadProducts() {
+      this.productsLoading = true;
+      this.productsLoadingFailed = false;
+      this.loadProductsTimer = setTimeout(() => {
+        // eslint-disable-next-line no-return-assign
+        axios.get(`${API_BASE_URL}/api/products/${this.$route.params.id}`)
+          // eslint-disable-next-line no-return-assign
+          .then((response) => this.productsData = response.data)
+          // eslint-disable-next-line no-return-assign
+          .catch(() => this.productsLoadingFailed = true).then(() => this.productsLoading = false);
+      }, 0);
+    },
+  },
+  watch: {
+    '$route.params.id': {
+      handler() {
+        this.loadProducts();
+      },
+      immediate: true,
     },
   },
   filters: {

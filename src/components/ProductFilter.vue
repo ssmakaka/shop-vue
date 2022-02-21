@@ -35,14 +35,14 @@
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
         <ul class="colors">
-          <li class="colors__item" v-for="color in colors" :key="color.id" >
+          <li class="colors__item" v-for="color in colors" :key="color.code" >
             <label class="colors__label">
               <input
                 class="colors__radio sr-only"
                 type="radio"
-                :value="color.cod" v-model="currentColorCod"
+                :value="color.id" v-model="currentColorCod"
               />
-              <span class="colors__value" :style="{backgroundColor: color.cod}">
+              <span class="colors__value" :style="{backgroundColor: color.code}">
               </span>
             </label>
           </li>
@@ -150,8 +150,8 @@
   </aside>
 </template>
 <script>
-import categories from '../data/categories';
-import colors from '../data/colors';
+import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
 export default {
   data() {
@@ -160,15 +160,18 @@ export default {
       currentPriceTo: 0,
       currentCategoryId: 0,
       currentColorCod: 0,
+
+      categoriesData: null,
+      colorsData: null,
     };
   },
   props: ['priceFrom', 'priceTo', 'categoryId', 'colorCod'],
   computed: {
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
     },
     colors() {
-      return colors;
+      return this.colorsData ? this.colorsData.items : [];
     },
   },
   watch: {
@@ -200,6 +203,18 @@ export default {
       this.$emit('update:colorCod', 0);
       this.$emit('filters-update');
     },
+    loadCategories() {
+      // eslint-disable-next-line no-return-assign
+      axios.get(`${API_BASE_URL}/api/productCategories`).then((response) => this.categoriesData = response.data);
+    },
+    loadColors() {
+      // eslint-disable-next-line no-return-assign
+      axios.get(`${API_BASE_URL}/api/colors`).then((response) => this.colorsData = response.data);
+    },
+  },
+  created() {
+    this.loadCategories();
+    this.loadColors();
   },
 };
 </script>
